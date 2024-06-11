@@ -7,6 +7,7 @@ import os
 
 def run_bot():
     while True:
+        print("starting bot.py")
         os.system("python3 bot.py")
         print("[WARNING] The bot.py shut down. This should not be printed")
         import time
