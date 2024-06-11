@@ -8,12 +8,10 @@ url="https://book-downloader-bot-b051.onrender.com"
 
 
 def run_bot():
-    while True:
-        print("starting bot.py")
-        os.system("python3 bot.py")
-        print("[WARNING] The bot.py shut down. This should not be printed")
-        import time
-        time.sleep(1)
+    print("starting bot.py")
+    os.system("python3 bot.py")
+    print("[WARNING] The bot.py shut down. This should not be printed")
+
 
 # threading.Thread(run_bot()).start()
 thread = threading.Thread(target=run_bot)
