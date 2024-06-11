@@ -13,7 +13,7 @@ database_object = database.Database()
 from utilities import handle_errors
 from dotenv import load_dotenv
 import os
-
+print("control inside bot.py")
 
 load_dotenv()
 bot= Client("bot", api_id=int(os.getenv('AB')),

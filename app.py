@@ -9,7 +9,7 @@ url="https://book-downloader-bot-b051.onrender.com"
 
 def run_bot():
     print("starting bot.py")
-    os.system("python3 bot.py")
+    # os.system("python3 bot.py")
     print("[WARNING] The bot.py shut down. This should not be printed")
 
 
