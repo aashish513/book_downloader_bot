@@ -5,3 +5,4 @@ tgcrypto
 gunicorn
 libgen-api
 python-dotenv
+aiohttp
