@@ -3,3 +3,4 @@ Flask
 git+https://github.com/KurimuzonAkuma/pyrogram.git
 tgcrypto
 gunicorn
+libgen-api
