@@ -125,13 +125,14 @@ async def callback_query_handler(client:Client, callback_query: CallbackQuery):
 
 
 
-@bot.on_message(filters.text & filters.private)
+@bot.on_message(filters.text & filters.private & filters.incoming)
 async def search(client, message:Message):
     await message.reply_chat_action(action=ChatAction.TYPING)
     query= message.text
     await asyncio.sleep(0.5)
     if len(query)<3:
         await message.reply("The search query is too short. Try again")
+        return
     sent_msg:Message = await message.reply(f'Searching for <i>{query}</i>...')
     try:
         books= await search_libgen(query)
