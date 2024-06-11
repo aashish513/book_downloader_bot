@@ -1,6 +1,6 @@
 from flask import Flask
-# import threading
-# import os
+import threading
+import os
 
 
 
@@ -13,6 +13,8 @@ def run_bot():
         time.sleep(1)
 
 # threading.Thread(run_bot()).start()
+thread = threading.Thread(target=run_bot)
+thread.start()
 
 
 
