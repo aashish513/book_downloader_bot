@@ -1,6 +1,6 @@
-from flask import Flask, jsonify, request
-import threading
-import os
+from flask import Flask
+# import threading
+# import os
 
 
 
@@ -12,7 +12,7 @@ def run_bot():
         import time
         time.sleep(1)
 
-threading.Thread(run_bot()).start()
+# threading.Thread(run_bot()).start()
 
 
 
