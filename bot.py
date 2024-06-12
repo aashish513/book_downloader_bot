@@ -14,7 +14,7 @@ from utilities import handle_errors
 from dotenv import load_dotenv
 import os
 print("control inside bot.py")
-
+database_object.connect()
 load_dotenv()
 bot= Client("bot", api_id=int(os.getenv('AB')),
             api_hash=os.getenv('CD'), 
@@ -26,13 +26,11 @@ bot= Client("bot", api_id=int(os.getenv('AB')),
 # Start command handler
 @bot.on_message(filters.command('start'))
 async def start(client, message):
-    keyboard = InlineKeyboardMarkup(
-        [
-            [InlineKeyboardButton("Button 1", callback_data="button1")],
-            [InlineKeyboardButton("Button 2", callback_data="button2")]
-        ]
-    )
-    await message.reply("Hello World! Send me a book name:)", reply_markup=keyboard)
+    await message.reply('''Hello! Send me a book name:)
+```Examples
+<i>Atomic Habits</i>
+<i>Ikigai</i>```
+''')
 
 
 
