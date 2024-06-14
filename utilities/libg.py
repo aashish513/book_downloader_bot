@@ -5,6 +5,7 @@ from utilities.download_file import download_file_from_url
 import traceback
 s = LibgenSearch()
 cached_queries={}
+print("inside libgen.py ")
 
 async def search_libgen(query, page=0):
     if query in cached_queries:
