@@ -22,7 +22,7 @@ def generate_progress_bar(progress):
 
 async def download_file_from_url(url, message: Message):
     try:
-        async with aiohttp.ClientSession(timeout=60*60) as session:  #1 hour timeout
+        async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(60*60)) as session:  #1 hour timeout
             async with session.get(url) as response:
                 if response.status == 200:
                     # Extract the file name from the Content-Disposition header
