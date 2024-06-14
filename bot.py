@@ -59,7 +59,7 @@ async def callback_query_handler(client:Client, callback_query: CallbackQuery):
 
                     #by @<something> is already present in caption
                     # This regex pattern matches " by @<something>" at the end of the string
-                    pattern = r"by @\w+$"
+                    pattern = r"(by|By) @\w+$"
                     # Using re.sub to replace the pattern with an empty string
                     # print(msg)
                     msg.caption = re.sub(pattern, '', msg.caption)
