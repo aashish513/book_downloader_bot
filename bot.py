@@ -47,7 +47,10 @@ async def callback_query_handler(client:Client, callback_query: CallbackQuery):
         # await asyncio.sleep(0.5)
         try:
             id:str = data.split("get_book_by_id")[-1]
-            await callback_query.answer(f"Sending book")
+            try:
+                await callback_query.answer(f"Sending book")
+            except:
+                pass
             
             #check id in mongodb
             tele_msg_id = database_object.find_row(id)
@@ -126,7 +129,10 @@ async def callback_query_handler(client:Client, callback_query: CallbackQuery):
                     await handle_errors.send_error_to_me(f"error here in sending downloading file error: {e}", client)
             
             await rep_msg.edit("Error occured. Please search again")
-            await callback_query.answer(f"Error. Please try searching again")
+            try:
+                await callback_query.answer(f"Error. Please try searching again")
+            except:
+                pass
         except Exception as e:
             await handle_errors.send_error_to_me(f"error2 here in sending downloading file error: {e}", client)
             await rep_msg.edit("Error occured. Please search again")
