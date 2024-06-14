@@ -4,7 +4,7 @@ import aiohttp
 import aiohttp
 import re
 import os
-from urllib.parse import urlparse
+from urllib.parse import urlparse, unquote
 from io import BytesIO
 
 async def download_file_from_url(url):
@@ -16,6 +16,7 @@ async def download_file_from_url(url):
                     cd = response.headers.get('content-disposition')
                     if cd:
                         filename = re.findall('filename="(.+)"', cd)
+                        print("filename content disposition", filename)
                         if filename:
                             file_name = filename[0]
                         else:
@@ -27,7 +28,9 @@ async def download_file_from_url(url):
                         parsed_url = urlparse(url)
                         file_name = os.path.basename(parsed_url.path)
 
+                    file_name = unquote(str(file_name))
                     # Read the file content
+                    print(file_name)
                     file_content = await response.read()
                     
                     # Create a BytesIO object and set its name

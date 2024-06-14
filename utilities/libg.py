@@ -39,14 +39,14 @@ async def get_download_url_by_id(book_id:str):
 # File Type: {book_data_dict['Extension']}
 # Size : {book_data_dict['Size']}'''
                 download_links_list=[]
-                if 'Cloudflare' in download_links:
-                    download_links_list.append(download_links['Cloudflare'])
-                if 'IPFS.io' in download_links:
-                    download_links_list.append(download_links['IPFS.io'])
+                # if 'Cloudflare' in download_links:
+                #     download_links_list.append(download_links['Cloudflare'])
+                # if 'IPFS.io' in download_links:
+                #     download_links_list.append(download_links['IPFS.io'])
                 
                 for index in download_links:
-                    if index not in ['Cloudflare', 'IPFS.io']:
-                        download_links_list.append(download_links[index])
+                    # if index not in ['Cloudflare', 'IPFS.io']:
+                    download_links_list.append(download_links[index])
                 
                 return download_links_list
 

@@ -1,5 +1,7 @@
 import asyncio
 from io import BytesIO
+import re
+
 from pyrogram import Client, filters, idle
 from pyrogram.types import Message
 from utilities.libg import search_libgen, get_download_url_by_id, get_filename_by_id
@@ -42,10 +44,10 @@ async def callback_query_handler(client:Client, callback_query: CallbackQuery):
 
     if data.startswith("get_book_by_id"):
         rep_msg = await bot.send_message(chat_id, "Sending...")
-        await asyncio.sleep(0.5)
+        # await asyncio.sleep(0.5)
         try:
             id:str = data.split("get_book_by_id")[-1]
-            await callback_query.answer(f"Sending book with id {id}")
+            await callback_query.answer(f"Sending book")
             
             #check id in mongodb
             tele_msg_id = database_object.find_row(id)
@@ -54,36 +56,52 @@ async def callback_query_handler(client:Client, callback_query: CallbackQuery):
                 try:
                     msgs = await client.get_messages(int(os.getenv("BOT_DATA_PRIV_CHANNEL")), [tele_msg_id])
                     msg:Message = msgs[0]
+
+                    #by @<something> is already present in caption
+                    # This regex pattern matches " by @<something>" at the end of the string
+                    pattern = r"by @\w+$"
+                    # Using re.sub to replace the pattern with an empty string
+                    # print(msg)
+                    msg.caption = re.sub(pattern, '', msg.caption)
+
+                    msg.caption= msg.caption +  f"By @{BOT_USERNAME}"
+                    # print(msg.caption)
+                    msg.caption_entities = None
+                    # print(msg)
+
                     await msg.copy(chat_id)
                     print("message sent using copy method. mongodb")
                     return
                 except Exception as e:
                     await handle_errors.send_error_to_me("Errro at 33 error: "+str(e), client)
 
-
+            #if doesnt exist in mongodb
             file_name=await get_filename_by_id(id)
             if not file_name:
-                await rep_msg.edit("Error occured. Please search again")
+                await rep_msg.edit("You are using one of the previous messages. Please search again!")
                 return
-            file_name = file_name + "\nby @"+ client.me.username
+            file_name = file_name + "\nBy @"+ BOT_USERNAME
 
             list_urls = await get_download_url_by_id(id)
             
-            for url in list_urls:
-                try:
-                    print("trying url ", url)
-                    await bot.send_chat_action(chat_id,ChatAction.UPLOAD_DOCUMENT )
-                    book_msg= await bot.send_document(chat_id, url, caption = file_name)
-                    book_msg = await book_msg.copy(int(os.getenv("BOT_DATA_PRIV_CHANNEL")))
-                    database_object.insert_row(id, book_msg.id)
-                    return
-                except exceptions.bad_request_400.WebpageCurlFailed:
-                    print("bad_request_400.WebpageCurlFailed")
-                except exceptions.bad_request_400.MediaEmpty:
-                    print("bad_request_400.MediaEmpty")
-                except Exception as e:
-                    print(e)
+            #use telegram server to upload file
+            # for url in list_urls:
+            #     try:
+            #         print("trying url ", url)
+            #         await bot.send_chat_action(chat_id,ChatAction.UPLOAD_DOCUMENT )
+            #         book_msg= await bot.send_document(chat_id, url, caption = file_name)
+            #         book_msg = await book_msg.copy(int(os.getenv("BOT_DATA_PRIV_CHANNEL")))
+            #         database_object.insert_row(id, book_msg.id)
+            #         return
+            #     except exceptions.bad_request_400.WebpageCurlFailed:
+            #         print("bad_request_400.WebpageCurlFailed")
+            #     except exceptions.bad_request_400.MediaEmpty:
+            #         print("bad_request_400.MediaEmpty")
+            #     except Exception as e:
+            #         print(e)
 
+
+            #download file here, then send to telegram
             for url in list_urls:
                 #download that file here and then send
                 try:
@@ -161,7 +179,9 @@ async def search(client, message:Message):
 
 bot.start()  # Automatically start() and idle()
 print('started')
-print(bot.me)
+bot_user_object= bot.me
+BOT_USERNAME= bot_user_object.username
+print(bot_user_object, BOT_USERNAME)
 a = bot.get_chat(int(os.getenv("BOT_DATA_PRIV_CHANNEL")))
 print(a)
 
